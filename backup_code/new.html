@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOUNCECRYPTION</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll */
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Custom scrollbar for results boxes */
+        .results-container {
+            scrollbar-width: thin;
+            scrollbar-color: #4b5563 #1f2937; /* gray-600 gray-800 */
+        }
+        .results-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .results-container::-webkit-scrollbar-track {
+            background: #1f2937; /* gray-800 */
+            border-radius: 4px;
+        }
+        .results-container::-webkit-scrollbar-thumb {
+            background: #4b5563; /* gray-600 */
+            border-radius: 4px;
+        }
+        .results-container::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* gray-500 */
+        }
+
+        /* Custom scrollbar for tab content panels */
+        .tab-panel {
+            scrollbar-width: thin;
+            scrollbar-color: #4b5563 #1f2937; /* gray-600 gray-800 */
+        }
+        .tab-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        .tab-panel::-webkit-scrollbar-track {
+            background: #1f2937; /* gray-800 */
+            border-radius: 4px;
+        }
+        .tab-panel::-webkit-scrollbar-thumb {
+            background: #4b5563; /* gray-600 */
+            border-radius: 4px;
+        }
+        .tab-panel::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* gray-500 */
+        }
+
+        /* Style for active tab */
+        .tab-button.active {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: white;
+        }
+        /* Style for inactive tab */
+        .tab-button:not(.active) {
+            background-color: #374151; /* bg-gray-700 */
+            color: #d1d5db; /* text-gray-300 */
+        }
+
+        /* L2 active tab */
+        .tab-button#l2-tab-button.active {
+             background-color: #7c3aed; /* bg-purple-600 */
+        }
+        /* L3 active tab */
+        .tab-button#l3-tab-button.active {
+             background-color: #0d9488; /* bg-teal-600 */
+        }
+        /* L4 active tab */
+        .tab-button#l4-tab-button.active {
+             background-color: #0891b2; /* bg-cyan-600 */
+        }
+        /* L5 active tab */
+        .tab-button#l5-tab-button.active {
+             background-color: #16a34a; /* bg-green-600 */
+        }
+        /* L6 active tab */
+        .tab-button#l6-tab-button.active {
+             background-color: #d97706; /* bg-orange-600 */
+        }
+        /* L7 active tab */
+        .tab-button#l7-tab-button.active {
+             background-color: #ca8a04; /* bg-yellow-600 */
+        }
+        /* L8 active tab */
+        .tab-button#l8-tab-button.active {
+             background-color: #dc2626; /* bg-red-600 */
+        }
+        /* L9 active tab */
+        .tab-button#l9-tab-button.active {
+             background-color: #4f46e5; /* bg-indigo-600 */
+        }
+
+
+        /* Added spin animation for loader */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body class="h-full text-gray-200 flex flex-col p-4 md:p-6 lg:p-8 gap-4 lg:gap-6">
+    <header class="flex-shrink-0">
+        <h1 class="text-2xl md:text-3xl font-bold text-white text-center md:text-left">
+            BOUNCECRYPTION
+        </h1>
+    </header>
+
+    <!-- Tab Buttons -->
+    <div class="flex-shrink-0 flex flex-wrap gap-2">
+        <button id="l1-tab-button" class="tab-button active font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L1
+        </button>
+        <button id="l2-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L2
+        </button>
+        <button id="l3-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L3
+        </button>
+        <button id="l4-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L4
+        </button>
+        <button id="l5-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L5
+        </button>
+        <button id="l6-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L6
+        </button>
+        <button id="l7-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L7
+        </button>
+        <button id="l8-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L8
+        </button>
+        <button id="l9-tab-button" class="tab-button font-semibold py-2 px-3 rounded-t-lg transition-colors duration-200 text-sm">
+            L9
+        </button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-grow min-h-0 bg-gray-800 rounded-b-lg rounded-tr-lg shadow-lg overflow-hidden">
+
+        <!-- Tab 1: Layer 1 Content -->
+        <div id="l1-tab-content" class="tab-content h-full">
+            <div class="flex flex-col lg:flex-row h-full gap-4 lg:gap-6 p-4 lg:p-6">
+                <!-- L1 Left Panel: Controls & Results -->
+                <div class="tab-panel flex flex-col lg:w-1/3 xl:w-1/4 gap-4 lg:gap-6 flex-shrink-0 min-h-0 overflow-y-auto">
+                    <!-- L1 Controls -->
+                    <div class="bg-gray-700 p-4 rounded-lg shadow-lg">
+                        <h2 class="text-xl font-semibold mb-4 text-white">L1 Config: Chaos Simulation</h2>
+                        <form id="config-form" class="space-y-4">
+                            <!-- NEW: Input Word -->
+                            <div>
+                                <label for="input-word" class="block text-sm font-medium text-gray-300">Input Word (for encryption)</label>
+                                <input type="text" id="input-word" value="BOUNCE" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <!-- End New -->
+                            <div>
+                                <label for="num-balls" class="block text-sm font-medium text-gray-300">Number of Balls</label>
+                                <input type="number" id="num-balls" value="300" min="10" max="1000" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="sim-frames" class="block text-sm font-medium text-gray-300">Simulation Frames</label>
+                                <input type="number" id="sim-frames" value="2000" min="100" max="20000" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="kdf-iters" class="block text-sm font-medium text-gray-300">KDF Iterations (PBKDF2)</label>
+                                <input type="number" id="kdf-iters" value="100000" min="1000" max="1000000" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="flex items-center">
+                                <input id="use-visualization" type="checkbox" checked class="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                                <label for="use-visualization" class="ml-2 block text-sm text-gray-300">Show Visualization (Faster if unchecked)</label>
+                            </div>
+                        </form>
+                    </div>
+
+                    <button id="generate-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Generate L1 Master Key
+                    </button>
+
+                    <!-- L1 Results -->
+                    <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0">
+                        <h2 class="text-xl font-semibold mb-2 text-white">L1 Results</h2>
+                        <div id="l1-status-message" class="text-sm text-gray-400 mb-2">Ready to generate L1 key.</div>
+                        <div id="l1-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                            <pre id="l1-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                        </div>
+                        <button id="copy-l1-key-button" class="hidden mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                            Copy L1 Key
+                        </button>
+                    </div>
+                </div>
+
+                <!-- L1 Right Panel: Simulation -->
+                <div id="simulation-panel" class="flex-grow bg-gray-700 rounded-lg shadow-lg flex items-center justify-center p-1 min-h-[300px] lg:min-h-0">
+                    <canvas id="simulation-canvas" class="w-full h-full bg-black rounded-md"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Layer 2 Content -->
+        <div id="l2-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L2 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">MLWE Parameters</h2>
+                    <form id="l2-config-form" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="l2-n" class="block text-sm font-medium text-gray-300">n (Dimension)</label>
+                                <input type="number" id="l2-n" value="256" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="l2-q" class="block text-sm font-medium text-gray-300">q (Modulus)</label>
+                                <input type="number" id="l2-q" value="3329" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="l2-k" class="block text-sm font-medium text-gray-300">k (Matrix Size)</label>
+                                <input type="number" id="l2-k" value="2" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="l2-eta" class="block text-sm font-medium text-gray-300">eta (Noise)</label>
+                                <input type="number" id="l2-eta" value="2" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l2-generate-button" class="w-full lg:w-1/2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L2 Key (Requires L1 Key)
+                </button>
+
+                <!-- L2 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L2 MLWE Key</h2>
+                    <div id="l2-status-message" class="text-sm text-gray-400 mb-2">Generate L1 key to proceed.</div>
+
+                    <!-- L2 Loading Spinner -->
+                    <div id="l2-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l2-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l2-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l2-key-button" class="hidden mt-2 w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L2 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Layer 3 Content -->
+        <div id="l3-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L3 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Neural PRNG Parameters</h2>
+                    <form id="l3-config-form" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="l3-vocab-size" class="block text-sm font-medium text-gray-300">Vocab Size</label>
+                                <input type="number" id="l3-vocab-size" value="256" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="l3-hidden-dim" class="block text-sm font-medium text-gray-300">Hidden Dim</label>
+                                <input type="number" id="l3-hidden-dim" value="128" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="l3-num-layers" class="block text-sm font-medium text-gray-300">Num Layers</label>
+                                <input type="number" id="l3-num-layers" value="4" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="l3-num-heads" class="block text-sm font-medium text-gray-300">Num Heads</label>
+                                <input type="number" id="l3-num-heads" value="8" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="col-span-2">
+                                <label for="l3-seq-len" class="block text-sm font-medium text-gray-300">Sequence Len</label>
+                                <input type="number" id="l3-seq-len" value="64" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l3-generate-button" class="w-full lg:w-1/2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L3 Key (Requires L2 Key)
+                </button>
+
+                <!-- L3 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L3 PRNG Key</h2>
+                    <div id="l3-status-message" class="text-sm text-gray-400 mb-2">Generate L2 key to proceed.</div>
+
+                    <!-- L3 Loading Spinner -->
+                    <div id="l3-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-teal-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l3-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l3-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l3-key-button" class="hidden mt-2 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L3 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Layer 4 Content -->
+        <div id="l4-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L4 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">AES-256-GCM Parameters</h2>
+                    <form id="l4-config-form" class="space-y-4">
+                        <div>
+                            <label for="l4-key-size" class="block text-sm font-medium text-gray-300">Key Size (bits)</label>
+                            <select id="l4-key-size" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="256">256</option>
+                                <option value="192">192</option>
+                                <option value="128">128</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l4-generate-button" class="w-full lg:w-1/2 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L4 Key (Requires L3 Key)
+                </button>
+
+                <!-- L4 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L4 AES Key</h2>
+                    <div id="l4-status-message" class="text-sm text-gray-400 mb-2">Generate L3 key to proceed.</div>
+
+                    <!-- L4 Loading Spinner -->
+                    <div id="l4-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l4-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l4-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l4-key-button" class="hidden mt-2 w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L4 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Layer 5 Content -->
+        <div id="l5-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L5 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Final Hashing Parameters</h2>
+                    <form id="l5-config-form" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="l5-hash-algo" class="block text-sm font-medium text-gray-300">Hash Algorithm</label>
+                                <select id="l5-hash-algo" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="SHA3-512">SHA3-512</option>
+                                    <option value="BLAKE2b">BLAKE2b</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="l5-obfuscation-rounds" class="block text-sm font-medium text-gray-300">Obfuscation Rounds</label>
+                                <input type="number" id="l5-obfuscation-rounds" value="10" min="1" max="100" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l5-generate-button" class="w-full lg:w-1/2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L5 Key (Requires L4 Key)
+                </button>
+
+                <!-- L5 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L5 Hashed Key</h2>
+                    <div id="l5-status-message" class="text-sm text-gray-400 mb-2">Generate L4 key to proceed.</div>
+
+                    <!-- L5 Loading Spinner -->
+                    <div id="l5-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l5-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l5-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l5-key-button" class="hidden mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L5 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 6: Layer 6 Content -->
+        <div id="l6-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L6 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Hybrid DSS Parameters</h2>
+                    <form id="l6-config-form" class="space-y-4">
+                        <div>
+                            <label for="l6-sig-scheme" class="block text-sm font-medium text-gray-300">Signature Scheme</label>
+                            <select id="l6-sig-scheme" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="Ed25519-Dilithium2">Ed25519-Dilithium2</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l6-generate-button" class="w-full lg:w-1/2 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L6 Key (Requires L5 Key)
+                </button>
+
+                <!-- L6 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L6 Signature Key</h2>
+                    <div id="l6-status-message" class="text-sm text-gray-400 mb-2">Generate L5 key to proceed.</div>
+
+                    <!-- L6 Loading Spinner -->
+                    <div id="l6-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-orange-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l6-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l6-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l6-key-button" class="hidden mt-2 w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L6 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 7: Layer 7 Content -->
+        <div id="l7-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L7 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Key Evolution Parameters</h2>
+                    <form id="l7-config-form" class="space-y-4">
+                        <div>
+                            <label for="l7-evolution-rounds" class="block text-sm font-medium text-gray-300">Evolution Rounds</label>
+                            <input type="number" id="l7-evolution-rounds" value="1" min="1" max="1000" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l7-generate-button" class="w-full lg:w-1/2 bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L7 Key (Requires L6 Key)
+                </button>
+
+                <!-- L7 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L7 Evolved Key</h2>
+                    <div id="l7-status-message" class="text-sm text-gray-400 mb-2">Generate L6 key to proceed.</div>
+
+                    <!-- L7 Loading Spinner -->
+                    <div id="l7-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l7-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l7-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l7-key-button" class="hidden mt-2 w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L7 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 8: Layer 8 Content -->
+        <div id="l8-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L8 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">ZKP Parameters</h2>
+                    <form id="l8-config-form" class="space-y-4">
+                        <div>
+                            <label for="l8-proof-algo" class="block text-sm font-medium text-gray-300">Proof Algorithm</label>
+                            <select id="l8-proof-algo" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                <option value="Schnorr-style ZKP">Schnorr-style ZKP</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l8-generate-button" class="w-full lg:w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L8 Proof (Requires L7 Key)
+                </button>
+
+                <!-- L8 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L8 ZK Proof</h2>
+                    <div id="l8-status-message" class="text-sm text-gray-400 mb-2">Generate L7 key to proceed.</div>
+
+                    <!-- L8 Loading Spinner -->
+                    <div id="l8-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-red-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l8-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l8-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l8-key-button" class="hidden mt-2 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L8 Proof
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 9: Layer 9 Content -->
+        <div id="l9-tab-content" class="tab-content h-full hidden">
+            <div class="tab-panel flex flex-col items-center w-full h-full gap-4 lg:gap-6 p-4 lg:p-6 overflow-y-auto">
+                <!-- L9 Controls -->
+                <div class="bg-gray-700 p-4 rounded-lg shadow-lg w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Quantum-Resistant Wrapping</h2>
+                    <form id="l9-config-form" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="l9-wrap-algo" class="block text-sm font-medium text-gray-300">Wrapping Algorithm</label>
+                                <select id="l9-wrap-algo" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="AES-GCM-Wrap">AES-GCM-Wrap</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="l9-kem-algo" class="block text-sm font-medium text-gray-300">KEM Algorithm</label>
+                                <select id="l9-kem-algo" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="Kyber-KEM">Kyber-KEM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <button id="l9-generate-button" class="w-full lg:w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Generate L9 Key (Requires L8 Proof)
+                </button>
+
+                <!-- L9 Results -->
+                <div class="flex-grow bg-gray-700 p-4 rounded-lg shadow-lg flex flex-col min-h-0 w-full lg:w-1/2">
+                    <h2 class="text-xl font-semibold mb-2 text-white">L9 Wrapped Key</h2>
+                    <div id="l9-status-message" class="text-sm text-gray-400 mb-2">Generate L8 proof to proceed.</div>
+
+                    <!-- L9 Loading Spinner -->
+                    <div id="l9-loader" class="hidden my-4 self-center">
+                        <div class="w-12 h-12 border-4 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+
+                    <div id="l9-results-container" class="results-container flex-grow bg-gray-900 rounded-md p-3 overflow-y-auto min-h-[100px]">
+                        <pre id="l9-results-output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                    </div>
+                    <button id="copy-l9-key-button" class="hidden mt-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm text-sm transition duration-200">
+                        Copy L9 Key
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // --- DOM Elements ---
+        const canvas = document.getElementById('simulation-canvas');
+        const simPanel = document.getElementById('simulation-panel');
+        const ctx = canvas.getContext('2d');
+
+        // Tab elements
+        const l1TabButton = document.getElementById('l1-tab-button');
+        const l2TabButton = document.getElementById('l2-tab-button');
+        const l3TabButton = document.getElementById('l3-tab-button');
+        const l4TabButton = document.getElementById('l4-tab-button');
+        const l5TabButton = document.getElementById('l5-tab-button');
+        const l6TabButton = document.getElementById('l6-tab-button');
+        const l7TabButton = document.getElementById('l7-tab-button');
+        const l8TabButton = document.getElementById('l8-tab-button');
+        const l9TabButton = document.getElementById('l9-tab-button');
+        const l1TabContent = document.getElementById('l1-tab-content');
+        const l2TabContent = document.getElementById('l2-tab-content');
+        const l3TabContent = document.getElementById('l3-tab-content');
+        const l4TabContent = document.getElementById('l4-tab-content');
+        const l5TabContent = document.getElementById('l5-tab-content');
+        const l6TabContent = document.getElementById('l6-tab-content');
+        const l7TabContent = document.getElementById('l7-tab-content');
+        const l8TabContent = document.getElementById('l8-tab-content');
+        const l9TabContent = document.getElementById('l9-tab-content');
+
+        // L1
+        const generateButton = document.getElementById('generate-button');
+        const l1StatusMessage = document.getElementById('l1-status-message');
+        const l1ResultsOutput = document.getElementById('l1-results-output');
+        const configForm = document.getElementById('config-form');
+        const numBallsInput = document.getElementById('num-balls');
+        const simFramesInput = document.getElementById('sim-frames');
+        const kdfItersInput = document.getElementById('kdf-iters');
+        const useVisInput = document.getElementById('use-visualization');
+        const copyL1KeyButton = document.getElementById('copy-l1-key-button');
+        const inputWordInput = document.getElementById('input-word'); // <-- NEW
+
+        // L2
+        const l2GenerateButton = document.getElementById('l2-generate-button');
+        const l2StatusMessage = document.getElementById('l2-status-message');
+        const l2ResultsOutput = document.getElementById('l2-results-output');
+        const l2nInput = document.getElementById('l2-n');
+        const l2qInput = document.getElementById('l2-q');
+        const l2kInput = document.getElementById('l2-k');
+        const l2etaInput = document.getElementById('l2-eta');
+        const copyL2KeyButton = document.getElementById('copy-l2-key-button');
+        const l2Loader = document.getElementById('l2-loader');
+
+        // L3
+        const l3GenerateButton = document.getElementById('l3-generate-button');
+        const l3StatusMessage = document.getElementById('l3-status-message');
+        const l3ResultsOutput = document.getElementById('l3-results-output');
+        const l3VocabSizeInput = document.getElementById('l3-vocab-size');
+        const l3HiddenDimInput = document.getElementById('l3-hidden-dim');
+        const l3NumLayersInput = document.getElementById('l3-num-layers');
+        const l3NumHeadsInput = document.getElementById('l3-num-heads');
+        const l3SeqLenInput = document.getElementById('l3-seq-len');
+        const copyL3KeyButton = document.getElementById('copy-l3-key-button');
+        const l3Loader = document.getElementById('l3-loader');
+
+        // L4
+        const l4GenerateButton = document.getElementById('l4-generate-button');
+        const l4StatusMessage = document.getElementById('l4-status-message');
+        const l4ResultsOutput = document.getElementById('l4-results-output');
+        const l4KeySizeInput = document.getElementById('l4-key-size');
+        const copyL4KeyButton = document.getElementById('copy-l4-key-button');
+        const l4Loader = document.getElementById('l4-loader');
+
+        // L5
+        const l5GenerateButton = document.getElementById('l5-generate-button');
+        const l5StatusMessage = document.getElementById('l5-status-message');
+        const l5ResultsOutput = document.getElementById('l5-results-output');
+        const l5HashAlgoInput = document.getElementById('l5-hash-algo');
+        const l5ObfuscationRoundsInput = document.getElementById('l5-obfuscation-rounds');
+        const copyL5KeyButton = document.getElementById('copy-l5-key-button');
+        const l5Loader = document.getElementById('l5-loader');
+
+        // L6
+        const l6GenerateButton = document.getElementById('l6-generate-button');
+        const l6StatusMessage = document.getElementById('l6-status-message');
+        const l6ResultsOutput = document.getElementById('l6-results-output');
+        const l6SigSchemeInput = document.getElementById('l6-sig-scheme');
+        const copyL6KeyButton = document.getElementById('copy-l6-key-button');
+        const l6Loader = document.getElementById('l6-loader');
+
+        // L7
+        const l7GenerateButton = document.getElementById('l7-generate-button');
+        const l7StatusMessage = document.getElementById('l7-status-message');
+        const l7ResultsOutput = document.getElementById('l7-results-output');
+        const l7EvolutionRoundsInput = document.getElementById('l7-evolution-rounds');
+        const copyL7KeyButton = document.getElementById('copy-l7-key-button');
+        const l7Loader = document.getElementById('l7-loader');
+
+        // L8
+        const l8GenerateButton = document.getElementById('l8-generate-button');
+        const l8StatusMessage = document.getElementById('l8-status-message');
+        const l8ResultsOutput = document.getElementById('l8-results-output');
+        const l8ProofAlgoInput = document.getElementById('l8-proof-algo');
+        const copyL8KeyButton = document.getElementById('copy-l8-key-button');
+        const l8Loader = document.getElementById('l8-loader');
+
+        // L9
+        const l9GenerateButton = document.getElementById('l9-generate-button');
+        const l9StatusMessage = document.getElementById('l9-status-message');
+        const l9ResultsOutput = document.getElementById('l9-results-output');
+        const l9WrapAlgoInput = document.getElementById('l9-wrap-algo');
+        const l9KEMAlgoInput = document.getElementById('l9-kem-algo');
+        const copyL9KeyButton = document.getElementById('copy-l9-key-button');
+        const l9Loader = document.getElementById('l9-loader');
+
+
+        // --- Global State ---
+        let balls = [];
+        let canvasWidth = canvas.clientWidth;
+        let canvasHeight = canvas.clientHeight;
+        let isRunning = false;
+        let frameCounter = 0;
+        let collectedEntropyBuffer;
+        let entropyDataView;
+        let entropyOffset = 0;
+        let config = {};
+        let finalL1MasterKey = "";
+        let finalL2MasterKey = "";
+        let finalL3MasterKey = "";
+        let finalL4MasterKey = "";
+        let finalL5MasterKey = "";
+        let finalL6MasterKey = "";
+        let finalL7MasterKey = "";
+        let finalL8MasterKey = ""; // This will store the "proof"
+        let finalL9MasterKey = "";
+        let currentEncryptedWord = ""; // <-- NEW
+
+        // --- Tab Switching Logic ---
+        function showTab(tabName) {
+            l1TabContent.classList.add('hidden');
+            l2TabContent.classList.add('hidden');
+            l3TabContent.classList.add('hidden');
+            l4TabContent.classList.add('hidden');
+            l5TabContent.classList.add('hidden');
+            l6TabContent.classList.add('hidden');
+            l7TabContent.classList.add('hidden');
+            l8TabContent.classList.add('hidden');
+            l9TabContent.classList.add('hidden');
+
+            l1TabButton.classList.remove('active');
+            l2TabButton.classList.remove('active');
+            l3TabButton.classList.remove('active');
+            l4TabButton.classList.remove('active');
+            l5TabButton.classList.remove('active');
+            l6TabButton.classList.remove('active');
+            l7TabButton.classList.remove('active');
+            l8TabButton.classList.remove('active');
+            l9TabButton.classList.remove('active');
+
+            if (tabName === 'l1') {
+                l1TabContent.classList.remove('hidden');
+                l1TabButton.classList.add('active');
+                setTimeout(resizeCanvas, 50);
+            } else if (tabName === 'l2') {
+                l2TabContent.classList.remove('hidden');
+                l2TabButton.classList.add('active');
+            } else if (tabName === 'l3') {
+                l3TabContent.classList.remove('hidden');
+                l3TabButton.classList.add('active');
+            } else if (tabName === 'l4') {
+                l4TabContent.classList.remove('hidden');
+                l4TabButton.classList.add('active');
+            } else if (tabName === 'l5') {
+                l5TabContent.classList.remove('hidden');
+                l5TabButton.classList.add('active');
+            } else if (tabName === 'l6') {
+                l6TabContent.classList.remove('hidden');
+                l6TabButton.classList.add('active');
+            } else if (tabName === 'l7') {
+                l7TabContent.classList.remove('hidden');
+                l7TabButton.classList.add('active');
+            } else if (tabName === 'l8') {
+                l8TabContent.classList.remove('hidden');
+                l8TabButton.classList.add('active');
+            } else if (tabName === 'l9') {
+                l9TabContent.classList.remove('hidden');
+                l9TabButton.classList.add('active');
+            }
+        }
+
+        l1TabButton.addEventListener('click', () => showTab('l1'));
+        l2TabButton.addEventListener('click', () => showTab('l2'));
+        l3TabButton.addEventListener('click', () => showTab('l3'));
+        l4TabButton.addEventListener('click', () => showTab('l4'));
+        l5TabButton.addEventListener('click', () => showTab('l5'));
+        l6TabButton.addEventListener('click', () => showTab('l6'));
+        l7TabButton.addEventListener('click', () => showTab('l7'));
+        l8TabButton.addEventListener('click', () => showTab('l8'));
+        l9TabButton.addEventListener('click', () => showTab('l9'));
+
+        // --- Helper Functions ---
+
+        /**
+         * Simple async hash function to simulate encryption at each layer.
+         */
+        async function simpleHash(inputString) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(inputString);
+            const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        /**
+         * Clamps a number between a low and high value.
+         */
+        function _clamp(x, lo, hi) {
+            return x < lo ? lo : x > hi ? hi : x;
+        }
+
+        /**
+         * A JS port of the ultra_chaotic_generator from the Python script.
+         * Added safety checks for NaN/Infinity.
+         */
+        function ultraChaoticGenerator(t, seed) {
+            try {
+                const randomNoise = (Math.random() * 65535 / 65535.0) - 0.5;
+                const a = Math.sin(t * seed * Math.sqrt(2.0));
+                // ... (rest of chaotic generator function)
+                const expArg = _clamp(t, -20.0, 20.0);
+                const b = Math.cos(Math.exp(expArg) * Math.PI);
+
+                const c = Math.tan(t + Math.log1p(Math.abs(seed) + 1e-12));
+                const d = Math.pow(Math.abs(Math.cos(a * b) + Math.sin(c)), 1.5);
+
+                const e = Math.atan(Math.sinh(_clamp(a + b - c, -10.0, 10.0)));
+                const f = Math.log1p(Math.abs(d + e));
+
+                const g = Math.sin(t * f * (seed + randomNoise));
+                const h = Math.tanh(t + g * 3.1415);
+                const i = ((Math.floor(t * 1000.0) ^ Math.floor(seed * 1000.0)) & 255) / 100.0;
+                const j = Math.cos(g + h + i);
+                const k = Math.sin(Math.log1p(Math.abs(j)));
+
+                const val = (a * e + b * f + c * g + h * i + j * k) + randomNoise * 5.0;
+                const normalizedVal = Math.tanh(val);
+
+                if (isNaN(normalizedVal) || !isFinite(normalizedVal)) {
+                    return 0.0;
+                }
+                return normalizedVal;
+            } catch (error) {
+                return 0.0;
+            }
+        }
+
+        /**
+         * Secure random float.
+         */
+        function secureUniform(min, max) {
+            const randomBuffer = new Uint32Array(1);
+            window.crypto.getRandomValues(randomBuffer);
+            const randomFloat = randomBuffer[0] / 0xFFFFFFFF;
+            return min + (randomFloat * (max - min));
+        }
+
+        /**
+         * Resizes the canvas to fit its container.
+         */
+        function resizeCanvas() {
+            canvasWidth = simPanel.clientWidth;
+            canvasHeight = simPanel.clientHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+        }
+
+        /**
+         * Initializes the state of the simulation.
+         */
+        function initializeSimulation() {
+            resizeCanvas();
+            balls = [];
+            frameCounter = 0;
+            entropyOffset = 0;
+
+            // Get config values
+            config = {
+                numBalls: parseInt(numBallsInput.value, 10),
+                simFrames: parseInt(simFramesInput.value, 10),
+                kdfIters: parseInt(kdfItersInput.value, 10),
+                useVisualization: useVisInput.checked,
+                radius: 5
+            };
+
+            // Allocate buffer for entropy collection
+            // 7 floats (x, y, vx, vy, chaos_m, chaos_e, chaos_g) per ball per frame
+            // Each float is 4 bytes (Float32)
+            const bytesPerBallPerFrame = 7 * 4;
+            const totalBytes = config.numBalls * config.simFrames * bytesPerBallPerFrame;
+
+            try {
+                collectedEntropyBuffer = new ArrayBuffer(totalBytes);
+                entropyDataView = new DataView(collectedEntropyBuffer);
+            } catch (error) {
+                console.error("Failed to allocate entropy buffer:", error);
+                l1StatusMessage.textContent = `Error: Failed to allocate ${totalBytes} bytes. Try fewer balls/frames.`;
+                isRunning = false;
+                generateButton.disabled = false;
+                return false;
+            }
+
+            const center_x = canvasWidth / 2;
+            const center_y = canvasHeight / 2;
+            const baseWidth = Math.max(config.radius + 5, (canvasWidth / 2) - config.radius);
+            const baseHeight = Math.max(config.radius + 5, (canvasHeight / 2) - config.radius);
+
+            for (let i = 0; i < config.numBalls; i++) {
+                const initialSeed = secureUniform(0.1, 1.5);
+                // ... (rest of ball initialization)
+                const chaos_m_init = _clamp(ultraChaoticGenerator(0.0, initialSeed), 0.07, 0.93);
+                const chaos_e_init = _clamp(ultraChaoticGenerator(0.0, initialSeed + 0.1), 0.07, 0.93);
+                const chaos_g_init = _clamp(ultraChaoticGenerator(0.0, initialSeed + 0.2), 0.07, 0.93);
+
+                balls.push({
+                    id: i,
+                    x: secureUniform(center_x - baseWidth, center_x + baseWidth),
+                    y: secureUniform(center_y - baseHeight, center_y + baseHeight),
+                    vx: secureUniform(-5.0, 5.0),
+                    vy: secureUniform(-5.0, 5.0),
+                    chaos_m: chaos_m_init,
+                    chaos_e: chaos_e_init,
+                    chaos_g: chaos_g_init,
+                    m_r: 3.98 + secureUniform(-0.018, 0.018),
+                    e_r: 3.94 + secureUniform(-0.023, 0.023),
+                    g_r: 3.97 + secureUniform(-0.012, 0.012),
+                    mass: 15.0 + 62.0 * chaos_m_init,
+                });
+            }
+            return true;
+        }
+
+        /**
+         * Main simulation loop.
+         */
+        function runSimulation(startTime) {
+            if (!isRunning) return;
+
+            if (frameCounter >= config.simFrames) {
+                l1StatusMessage.textContent = `L1 Simulation complete. Collected ${entropyOffset} entropy bytes. Deriving key...`;
+                console.log(`Simulation complete. Collected ${entropyOffset} entropy bytes.`);
+                isRunning = false;
+                // Use setTimeout to allow UI to update before heavy crypto work
+                setTimeout(deriveL1MasterKey, 50);
+                return;
+            }
+
+            // Update status
+            if (frameCounter % 100 === 0) {
+                const percent = ((frameCounter / config.simFrames) * 100).toFixed(0);
+                l1StatusMessage.textContent = `L1 Simulating... [${percent}%] (Frame ${frameCounter}/${config.simFrames})`;
+            }
+
+            // --- Simulation Logic ---
+            const center_x = canvasWidth / 2;
+            const center_y = canvasHeight / 2;
+            const baseWidth = Math.max(config.radius + 5, (canvasWidth / 2) - config.radius);
+            const baseHeight = Math.max(config.radius + 5, (canvasHeight / 2) - config.radius);
+            const radius = config.radius;
+            // ... (rest of simulation logic) ...
+
+            const t = (performance.now() - startTime) / 1000.0;
+            const pulseAmplitude = 100;
+            const pulseFrequency = 1.0;
+
+            // Ensure semi-axes are non-negative
+            const semiMajorAxisX = Math.max(0, baseWidth + pulseAmplitude * Math.sin(t * pulseFrequency));
+            const semiMajorAxisY = Math.max(0, baseHeight + pulseAmplitude * Math.cos(t * pulseFrequency));
+
+            if (config.useVisualization) {
+                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                // Draw ellipse boundary
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
+                ctx.ellipse(center_x, center_y, semiMajorAxisX, semiMajorAxisY, 0, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fillStyle = 'white';
+            }
+
+            for (let i = 0; i < balls.length; i++) {
+                const ball = balls[i];
+
+                // Chaos evolution
+                ball.chaos_m = _clamp(ball.m_r * ball.chaos_m * (1 - ball.chaos_m) + secureUniform(-0.008, 0.008), 0.07, 0.93);
+                ball.chaos_e = _clamp(ball.e_r * ball.chaos_e * (1 - ball.chaos_e) + secureUniform(-0.008, 0.008), 0.07, 0.93);
+                ball.chaos_g = _clamp(ball.g_r * ball.chaos_g * (1 - ball.chaos_g) + secureUniform(-0.006, 0.006), 0.07, 0.93);
+
+                const mass = 15.0 + 62.0 * ball.chaos_m;
+                const e = 0.25 + 0.7 * ball.chaos_e; // Restitution
+                const G = 0.016 + ball.chaos_g * 0.085; // "Gravity"
+                ball.mass = mass;
+
+                // Forces
+                let fx = 0.0, fy = 0.0;
+                for (let j = 0; j < balls.length; j++) {
+                    if (i === j) continue;
+                    const other = balls[j];
+                    const dx = other.x - ball.x;
+                    const dy = other.y - ball.y;
+                    let distSq = dx * dx + dy * dy;
+
+                    if (distSq <= 1e-12 || distSq < (2.0 * radius) ** 2) {
+                        continue;
+                    }
+
+                    const force = (G * mass * other.mass) / distSq;
+                    const angle = Math.atan2(dy, dx);
+                    fx += force * Math.cos(angle);
+                    fy += force * Math.sin(angle);
+                }
+
+                // Update velocity and position
+                const nudge = secureUniform(-0.12, 0.12);
+                ball.vx += fx + nudge;
+                ball.vy += fy + nudge;
+                const speedLimit = 30.0;
+                ball.vx = _clamp(ball.vx, -speedLimit, speedLimit);
+                ball.vy = _clamp(ball.vy, -speedLimit, speedLimit);
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+
+                // Boundary handling (ellipse)
+                const dx_center = ball.x - center_x;
+                const dy_center = ball.y - center_y;
+                const ax = Math.max(1e-6, semiMajorAxisX);
+                const ay = Math.max(1e-6, semiMajorAxisY);
+                const ellipseEq = (dx_center ** 2 / ax ** 2) + (dy_center ** 2 / ay ** 2);
+
+                if (ellipseEq >= 1.0) {
+                    const nx = dx_center / (ax ** 2);
+                    const ny = dy_center / (ay ** 2);
+                    const normMagnitude = Math.hypot(nx, ny) || 1.0;
+                    const nxf = nx / normMagnitude;
+                    const nyf = ny / normMagnitude;
+
+                    const dotProduct = ball.vx * nxf + ball.vy * nyf;
+                    ball.vx = (ball.vx - 2.0 * dotProduct * nxf) * e;
+                    ball.vy = (ball.vy - 2.0 * dotProduct * nyf) * e;
+
+                    const currentEqSqrt = Math.sqrt(Math.max(ellipseEq, 1.0));
+                    ball.x = center_x + dx_center / currentEqSqrt;
+                    ball.y = center_y + dy_center / currentEqSqrt;
+                }
+
+                if (config.useVisualization) {
+                    ctx.beginPath();
+                    ctx.arc(ball.x, ball.y, radius, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+
+                // Collect entropy
+                try {
+                    entropyDataView.setFloat32(entropyOffset, ball.x, true); // true for little-endian
+                    entropyOffset += 4;
+                    entropyDataView.setFloat32(entropyOffset, ball.y, true);
+                    entropyOffset += 4;
+                    entropyDataView.setFloat32(entropyOffset, ball.vx, true);
+                    entropyOffset += 4;
+                    entropyDataView.setFloat32(entropyOffset, ball.vy, true);
+                    entropyOffset += 4;
+                    entropyDataView.setFloat32(entropyOffset, ball.chaos_m, true);
+                    entropyOffset += 4;
+                    entropyDataView.setFloat32(entropyOffset, ball.chaos_e, true);
+                    entropyOffset += 4;
+                    entropyDataView.setFloat32(entropyOffset, ball.chaos_g, true);
+                    entropyOffset += 4;
+                } catch(e) {
+                    // ... (error handling)
+                    if (isRunning) { // Only log once
+                        console.warn("Entropy buffer full or write error. Stopping collection.", e);
+                        isRunning = false; // Force stop
+                        l1StatusMessage.textContent = "Error: Entropy buffer overflow. Stopping.";
+                        setTimeout(deriveL1MasterKey, 50); // Try to derive with what we have
+                    }
+                }
+            }
+
+            // Collision handler
+            for (let i = 0; i < balls.length; i++) {
+                for (let j = i + 1; j < balls.length; j++) {
+                    const ball1 = balls[i];
+                    const ball2 = balls[j];
+                    // ... (rest of collision logic)
+                    const dx = ball2.x - ball1.x;
+                    const dy = ball2.y - ball1.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist > 0 && dist < 2 * radius) {
+                        const nx = dx / dist;
+                        const ny = dy / dist;
+                        const p = 2.0 * (ball1.vx * nx + ball1.vy * ny - ball2.vx * nx - ball2.vy * ny) / (ball1.mass + ball2.mass);
+
+                        ball1.vx -= p * ball2.mass * nx;
+                        ball1.vy -= p * ball2.mass * ny;
+                        ball2.vx += p * ball1.mass * nx;
+                        ball2.vy += p * ball1.mass * ny;
+
+                        const overlap = (2 * radius - dist) / 2.0 + 0.01;
+                        ball1.x -= overlap * nx;
+                        ball1.y -= overlap * ny;
+                        ball2.x += overlap * nx;
+                        ball2.y += overlap * ny;
+                    }
+                }
+            }
+
+            frameCounter++;
+            requestAnimationFrame(() => runSimulation(startTime));
+        }
+
+        /**
+         * Derives the L1 master key from the collected entropy.
+         */
+        async function deriveL1MasterKey() {
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            try {
+                // 1. Get the collected entropy (only the part we wrote to)
+                const collectedData = new Uint8Array(collectedEntropyBuffer, 0, entropyOffset);
+                if (collectedData.length === 0) {
+                    throw new Error("No entropy was collected.");
+                }
+
+                // 2. Hash the classical entropy
+                l1StatusMessage.textContent = "Hashing classical entropy (SHA-256)...";
+                const classicalHash = await window.crypto.subtle.digest('SHA-256', collectedData);
+
+                // 3. Generate a hardware-based salt
+                const salt = window.crypto.getRandomValues(new Uint8Array(32));
+
+                // 4. Import the classical hash as the "password" for PBKDF2
+                const keyMaterial = await window.crypto.subtle.importKey(
+                    "raw",
+                    classicalHash,
+                    "PBKDF2",
+                    false,
+                    ["deriveBits"]
+                );
+
+                // 5. Run PBKDF2
+                l1StatusMessage.textContent = `Running PBKDF2 (${config.kdfIters.toLocaleString()} iterations)...`;
+                const derivedBits = await window.crypto.subtle.deriveBits(
+                    {
+                        name: "PBKDF2",
+                        salt: salt,
+                        iterations: config.kdfIters,
+                        hash: "SHA-256",
+                    },
+                    keyMaterial,
+                    256 // 256 bits (32 bytes)
+                );
+
+                // 6. Format the final key
+                const keyArray = new Uint8Array(derivedBits);
+                finalL1MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join('');
+
+                // 7. NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL1MasterKey);
+
+                // 8. Display results
+                l1StatusMessage.textContent = "L1 Key Generated. Proceed to L2.";
+                l1ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L1):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L1 Master Key:</span>
+<span class="text-white break-words">${finalL1MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L1 Details ---</span>
+<span class="text-gray-400">Classical Entropy:</span> ${entropyOffset.toLocaleString()} bytes
+<span class="text-gray-400">KDF:</span> PBKDF2-HMAC-SHA256
+<span class="text-gray-400">Iterations:</span> ${config.kdfIters.toLocaleString()}
+<span class="text-gray-400">Salt (hex):</span> ${Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('')}
+                `;
+                copyL1KeyButton.classList.remove('hidden');
+
+                // 9. Enable L2 Generation
+                l2GenerateButton.disabled = false;
+                l2GenerateButton.textContent = "Generate L2 Key";
+                l2StatusMessage.textContent = "L1 Key is ready. You can now generate the L2 key."
+                // REMOVED: showTab('l2');
+
+            } catch (error) {
+                console.error("Error deriving L1 key:", error);
+                l1StatusMessage.textContent = "Error during L1 key derivation.";
+                l1ResultsOutput.textContent = `Error: ${error.message}`;
+            } finally {
+                isRunning = false;
+                generateButton.disabled = false;
+            }
+        }
+
+        /**
+         * Derives the L2 key (simulated) by hashing L1 key + L2 params.
+         */
+        async function deriveL2Key() {
+            if (!finalL1MasterKey) {
+                l2StatusMessage.textContent = "Error: Layer 1 key not found. Please generate it first.";
+                // REMOVED: showTab('l1');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l2GenerateButton.disabled = true;
+            l2StatusMessage.textContent = "Deriving Layer 2 key (simulated)...";
+            l2Loader.classList.remove('hidden');
+            l2ResultsOutput.innerHTML = "";
+            copyL2KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l2Config = {
+                    n: l2nInput.value,
+                    q: l2qInput.value,
+                    k: l2kInput.value,
+                    eta: l2etaInput.value
+                };
+
+                // SIMULATION: ...
+                const seedMaterial = finalL1MasterKey + l2Config.n + l2Config.q + l2Config.k + l2Config.eta;
+
+                const encoder = new TextEncoder();
+                const data = encoder.encode(seedMaterial);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+
+                const keyArray = new Uint8Array(hashBuffer);
+                finalL2MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join('');
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL2MasterKey);
+
+                // Display L2 results
+                l2ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L2):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L2 MLWE Key (Simulated):</span>
+<span class="text-white break-words">${finalL2MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L2 Details ---</span>
+<span class="text-gray-400">L2 Seed (L1 Key):</span> ${finalL1MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L2 Params:</span> n=${l2Config.n}, q=${l2Config.q}, k=${l2Config.k}, eta=${l2Config.eta}
+<span class="text-gray-400">Note:</span> L2 key is simulated by hashing the L1 key with L2 params.
+                `;
+                copyL2KeyButton.classList.remove('hidden');
+                l2StatusMessage.textContent = "L2 Key Generated Successfully! Proceed to L3.";
+
+                // Enable L3 Generation
+                l3GenerateButton.disabled = false;
+                l3GenerateButton.textContent = "Generate L3 Key";
+                l3StatusMessage.textContent = "L2 Key is ready. You can now generate the L3 key."
+                // REMOVED: showTab('l3');
+
+            } catch (error) {
+                console.error("Error deriving L2 key:", error);
+                l2StatusMessage.textContent = "Error during L2 key derivation.";
+            } finally {
+                l2GenerateButton.disabled = false;
+                l2Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L3 key (simulated) by hashing L2 key + L3 params.
+         */
+        async function deriveL3Key() {
+            if (!finalL2MasterKey) {
+                l3StatusMessage.textContent = "Error: Layer 2 key not found. Please generate it first.";
+                // REMOVED: showTab('l2');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l3GenerateButton.disabled = true;
+            l3StatusMessage.textContent = "Deriving Layer 3 key (simulated)...";
+            l3Loader.classList.remove('hidden');
+            l3ResultsOutput.innerHTML = "";
+            copyL3KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l3Config = {
+                    vocab: l3VocabSizeInput.value,
+                    dim: l3HiddenDimInput.value,
+                    layers: l3NumLayersInput.value,
+                    heads: l3NumHeadsInput.value,
+                    seq: l3SeqLenInput.value
+                };
+
+                // SIMULATION: Hash L2 key with L3 params
+                const seedMaterial = finalL2MasterKey + l3Config.vocab + l3Config.dim + l3Config.layers + l3Config.heads + l3Config.seq;
+
+                const encoder = new TextEncoder();
+                const data = encoder.encode(seedMaterial);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+
+                const keyArray = new Uint8Array(hashBuffer);
+                finalL3MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join('');
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL3MasterKey);
+
+                // Display L3 results
+                l3ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L3):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L3 PRNG Key (Simulated):</span>
+<span class="text-white break-words">${finalL3MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L3 Details ---</span>
+<span class="text-gray-400">L3 Seed (L2 Key):</span> ${finalL2MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L3 Params:</span>
+  vocab_size: ${l3Config.vocab}
+  hidden_dim: ${l3Config.dim}
+  num_layers: ${l3Config.layers}
+  num_heads: ${l3Config.heads}
+  seq_len: ${l3Config.seq}
+<span class="text-gray-400">Note:</span> L3 key is simulated by hashing the L2 key with L3 params.
+                `;
+                copyL3KeyButton.classList.remove('hidden');
+                l3StatusMessage.textContent = "L3 Key Generated Successfully! Proceed to L4.";
+
+                // Enable L4 Generation
+                l4GenerateButton.disabled = false;
+                l4GenerateButton.textContent = "Generate L4 Key";
+                l4StatusMessage.textContent = "L3 Key is ready. You can now generate the L4 key."
+                // REMOVED: showTab('l4');
+
+            } catch (error) {
+                console.error("Error deriving L3 key:", error);
+                l3StatusMessage.textContent = "Error during L3 key derivation.";
+            } finally {
+                l3GenerateButton.disabled = false;
+                l3Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L4 key (simulated) by hashing L3 key + L4 params.
+         */
+        async function deriveL4Key() {
+            if (!finalL3MasterKey) {
+                l4StatusMessage.textContent = "Error: Layer 3 key not found. Please generate it first.";
+                // REMOVED: showTab('l3');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l4GenerateButton.disabled = true;
+            l4StatusMessage.textContent = "Deriving Layer 4 key (simulated)...";
+            l4Loader.classList.remove('hidden');
+            l4ResultsOutput.innerHTML = "";
+            copyL4KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l4Config = {
+                    keySize: l4KeySizeInput.value,
+                };
+
+                // SIMULATION: Hash L3 key with L4 params
+                const seedMaterial = finalL3MasterKey + l4Config.keySize;
+
+                const encoder = new TextEncoder();
+                const data = encoder.encode(seedMaterial);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+
+                const keyArray = new Uint8Array(hashBuffer);
+                // Adjust key length based on selection for realism
+                const keyByteSize = parseInt(l4Config.keySize, 10) / 8;
+                finalL4MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join('').substring(0, keyByteSize * 2);
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL4MasterKey);
+
+                // Display L4 results
+                l4ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L4):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L4 AES Key (Simulated):</span>
+<span class="text-white break-words">${finalL4MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L4 Details ---</span>
+<span class="text-gray-400">L4 Seed (L3 Key):</span> ${finalL3MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L4 Params:</span>
+  Algorithm: AES-GCM
+  Key Size: ${l4Config.keySize} bits
+<span class="text-gray-400">Note:</span> L4 key is simulated by hashing the L3 key with L4 params.
+                `;
+                copyL4KeyButton.classList.remove('hidden');
+                l4StatusMessage.textContent = "L4 Key Generated Successfully! Proceed to L5.";
+
+                // Enable L5 Generation
+                l5GenerateButton.disabled = false;
+                l5GenerateButton.textContent = "Generate Layer 5 Key";
+                l5StatusMessage.textContent = "L4 Key is ready. You can now generate the L5 key."
+                // REMOVED: showTab('l5');
+
+            } catch (error) {
+                console.error("Error deriving L4 key:", error);
+                l4StatusMessage.textContent = "Error during L4 key derivation.";
+            } finally {
+                l4GenerateButton.disabled = false;
+                l4Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L5 key (simulated) by hashing L4 key + L5 params.
+         */
+        async function deriveL5Key() {
+            if (!finalL4MasterKey) {
+                l5StatusMessage.textContent = "Error: Layer 4 key not found. Please generate it first.";
+                // REMOVED: showTab('l4');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l5GenerateButton.disabled = true;
+            l5StatusMessage.textContent = "Deriving Layer 5 key (simulated)...";
+            l5Loader.classList.remove('hidden');
+            l5ResultsOutput.innerHTML = "";
+            copyL5KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l5Config = {
+                    hash: l5HashAlgoInput.value,
+                    rounds: l5ObfuscationRoundsInput.value
+                };
+
+                // SIMULATION: Hash L4 key with L5 params
+                let currentHash = finalL4MasterKey;
+                const encoder = new TextEncoder();
+
+                // Simulate "obfuscation rounds" by re-hashing
+                for(let i=0; i < parseInt(l5Config.rounds, 10); i++) {
+                     const seedMaterial = currentHash + l5Config.hash + i;
+                     const data = encoder.encode(seedMaterial);
+                     const hashBuffer = await window.crypto.subtle.digest('SHA-256', data); // Using SHA-256 for browser simplicity
+                     currentHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                }
+                finalL5MasterKey = currentHash;
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL5MasterKey);
+
+                // Display L5 results
+                l5ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L5):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L5 Hashed Key (Simulated):</span>
+<span class="text-white break-words">${finalL5MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L5 Details ---</span>
+<span class="text-gray-400">L5 Seed (L4 Key):</span> ${finalL4MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L5 Params:</span>
+  Hash Algo: ${l5Config.hash} (simulated via SHA-256)
+  Rounds: ${l5Config.rounds}
+<span class="text-gray-400">Note:</span> L5 key is simulated by iteratively hashing the L4 key.
+                `;
+                copyL5KeyButton.classList.remove('hidden');
+                l5StatusMessage.textContent = "L5 Key Generated Successfully! Proceed to L6.";
+
+                // Enable L6 Generation
+                l6GenerateButton.disabled = false;
+                l6GenerateButton.textContent = "Generate Layer 6 Key";
+                l6StatusMessage.textContent = "L5 Key is ready. You can now generate the L6 key."
+                // REMOVED: showTab('l6');
+
+            } catch (error)
+ {
+                console.error("Error deriving L5 key:", error);
+                l5StatusMessage.textContent = "Error during L5 key derivation.";
+            } finally {
+                l5GenerateButton.disabled = false;
+                l5Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L6 key (simulated) by hashing L5 key + L6 params.
+         */
+        async function deriveL6Key() {
+            if (!finalL5MasterKey) {
+                l6StatusMessage.textContent = "Error: Layer 5 key not found. Please generate it first.";
+                // REMOVED: showTab('l5');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l6GenerateButton.disabled = true;
+            l6StatusMessage.textContent = "Deriving Layer 6 key (simulated)...";
+            l6Loader.classList.remove('hidden');
+            l6ResultsOutput.innerHTML = "";
+            copyL6KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l6Config = {
+                    scheme: l6SigSchemeInput.value,
+                };
+
+                // SIMULATION: Hash L5 key with L6 params
+                const seedMaterial = finalL5MasterKey + l6Config.scheme;
+
+                const encoder = new TextEncoder();
+                const data = encoder.encode(seedMaterial);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+
+                const keyArray = new Uint8Array(hashBuffer);
+                finalL6MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join('');
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL6MasterKey);
+
+                // Display L6 results
+                l6ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L6):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L6 Signature Key (Simulated):</span>
+<span class="text-white break-words">${finalL6MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L6 Details ---</span>
+<span class="text-gray-400">L6 Seed (L5 Key):</span> ${finalL5MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L6 Params:</span>
+  Signature Scheme: ${l6Config.scheme}
+<span class="text-gray-400">Note:</span> L6 key is simulated by hashing the L5 key.
+                `;
+                copyL6KeyButton.classList.remove('hidden');
+                l6StatusMessage.textContent = "L6 Key Generated Successfully! Proceed to L7.";
+
+                // Enable L7 Generation
+                l7GenerateButton.disabled = false;
+                l7GenerateButton.textContent = "Generate Layer 7 Key";
+                l7StatusMessage.textContent = "L6 Key is ready. You can now generate the L7 key."
+                // REMOVED: showTab('l7');
+
+            } catch (error)
+ {
+                console.error("Error deriving L6 key:", error);
+                l6StatusMessage.textContent = "Error during L6 key derivation.";
+            } finally {
+                l6GenerateButton.disabled = false;
+                l6Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L7 key (simulated) by hashing L6 key + L7 params.
+         */
+        async function deriveL7Key() {
+            if (!finalL6MasterKey) {
+                l7StatusMessage.textContent = "Error: Layer 6 key not found. Please generate it first.";
+                // REMOVED: showTab('l6');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l7GenerateButton.disabled = true;
+            l7StatusMessage.textContent = "Deriving Layer 7 key (simulated)...";
+            l7Loader.classList.remove('hidden');
+            l7ResultsOutput.innerHTML = "";
+            copyL7KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l7Config = {
+                    rounds: l7EvolutionRoundsInput.value
+                };
+
+                // SIMULATION: Hash L6 key with L7 params
+                let currentHash = finalL6MasterKey;
+                const encoder = new TextEncoder();
+
+                // Simulate "evolution rounds" by re-hashing
+                for(let i=0; i < parseInt(l7Config.rounds, 10); i++) {
+                     const seedMaterial = currentHash + i;
+                     const data = encoder.encode(seedMaterial);
+                     const hashBuffer = await window.crypto.subtle.digest('SHA-256', data); // Using SHA-256 for browser simplicity
+                     currentHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                }
+                finalL7MasterKey = currentHash;
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL7MasterKey);
+
+                // Display L7 results
+                l7ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L7):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L7 Evolved Key (Simulated):</span>
+<span class="text-white break-words">${finalL7MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L7 Details ---</span>
+<span class="text-gray-400">L7 Seed (L6 Key):</span> ${finalL6MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L7 Params:</span>
+  Evolution Rounds: ${l7Config.rounds}
+<span class="text-gray-400">Note:</span> L7 key is simulated by iteratively hashing the L6 key.
+                `;
+                copyL7KeyButton.classList.remove('hidden');
+                l7StatusMessage.textContent = "L7 Key Generated Successfully! Proceed to L8.";
+
+                // Enable L8 Generation
+                l8GenerateButton.disabled = false;
+                l8GenerateButton.textContent = "Generate Layer 8 Proof";
+                l8StatusMessage.textContent = "L7 Key is ready. You can now generate the L8 proof."
+                // REMOVED: showTab('l8');
+
+            } catch (error)
+ {
+                console.error("Error deriving L7 key:", error);
+                l7StatusMessage.textContent = "Error during L7 key derivation.";
+            } finally {
+                l7GenerateButton.disabled = false;
+                l7Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L8 proof (simulated) by hashing L7 key + L8 params.
+         */
+        async function deriveL8Proof() {
+            if (!finalL7MasterKey) {
+                l8StatusMessage.textContent = "Error: Layer 7 key not found. Please generate it first.";
+                // REMOVED: showTab('l7');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l8GenerateButton.disabled = true;
+            l8StatusMessage.textContent = "Deriving Layer 8 ZK Proof (simulated)...";
+            l8Loader.classList.remove('hidden');
+            l8ResultsOutput.innerHTML = "";
+            copyL8KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l8Config = {
+                    algo: l8ProofAlgoInput.value
+                };
+
+                // SIMULATION: Hash L7 key with L8 params
+                const seedMaterial = finalL7MasterKey + l8Config.algo;
+
+                const encoder = new TextEncoder();
+                const data = encoder.encode(seedMaterial);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+
+                const keyArray = new Uint8Array(hashBuffer);
+                finalL8MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join(''); // This is the "proof"
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL8MasterKey);
+
+                // Display L8 results
+                l8ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L8):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L8 ZK Proof (Simulated):</span>
+<span class="text-white break-words">${finalL8MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L8 Details ---</span>
+<span class="text-gray-400">L8 Seed (L7 Key):</span> ${finalL7MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L8 Params:</span>
+  Proof Algorithm: ${l8Config.algo}
+<span class="text-gray-400">Note:</span> L8 Proof is simulated by hashing the L7 key.
+                `;
+                copyL8KeyButton.classList.remove('hidden');
+                l8StatusMessage.textContent = "L8 Proof Generated Successfully! Proceed to L9.";
+
+                // Enable L9 Generation
+                l9GenerateButton.disabled = false;
+                l9GenerateButton.textContent = "Generate Layer 9 Key";
+                l9StatusMessage.textContent = "L8 Proof is ready. You can now generate the L9 key."
+                // REMOVED: showTab('l9');
+
+            } catch (error)
+ {
+                console.error("Error deriving L8 proof:", error);
+                l8StatusMessage.textContent = "Error during L8 proof derivation.";
+            } finally {
+                l8GenerateButton.disabled = false;
+                l8Loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Derives the L9 key (simulated) by hashing L8 proof + L9 params.
+         */
+        async function deriveL9Key() {
+            if (!finalL8MasterKey) {
+                l9StatusMessage.textContent = "Error: Layer 8 proof not found. Please generate it first.";
+                // REMOVED: showTab('l8');
+                return;
+            }
+
+            const wordToEncrypt = currentEncryptedWord; // Get word before async
+            l9GenerateButton.disabled = true;
+            l9StatusMessage.textContent = "Deriving Layer 9 key (simulated)...";
+            l9Loader.classList.remove('hidden');
+            l9ResultsOutput.innerHTML = "";
+            copyL9KeyButton.classList.add('hidden');
+
+            try {
+                // Simulate a slight delay for the crypto operation
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const l9Config = {
+                    wrap: l9WrapAlgoInput.value,
+                    kem: l9KEMAlgoInput.value
+                };
+
+                // SIMULATION: Hash L8 proof with L9 params
+                const seedMaterial = finalL8MasterKey + l9Config.wrap + l9Config.kem;
+
+                const encoder = new TextEncoder();
+                const data = encoder.encode(seedMaterial);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+
+                const keyArray = new Uint8Array(hashBuffer);
+                finalL9MasterKey = Array.from(keyArray).map(b => b.toString(16).padStart(2, '0')).join('');
+
+                // NEW: Encrypt word
+                currentEncryptedWord = await simpleHash(wordToEncrypt + finalL9MasterKey);
+
+                // Display L9 results
+                l9ResultsOutput.innerHTML = `
+<span class="font-semibold text-cyan-400">Encrypted Word (L9):</span>
+<span class="text-white break-words">${currentEncryptedWord}</span>
+
+<span class="font-semibold text-green-400">L9 Wrapped Key (Simulated):</span>
+<span class="text-white break-words">${finalL9MasterKey}</span>
+
+<span class="font-semibold text-gray-400">--- L9 Details ---</span>
+<span class="text-gray-400">L9 Seed (L8 Proof):</span> ${finalL8MasterKey.substring(0, 20)}...
+<span class="text-gray-400">L9 Params:</span>
+  Wrap Algo: ${l9Config.wrap}
+  KEM Algo: ${l9Config.kem}
+<span class="text-gray-400">Note:</span> L9 key is simulated by hashing the L8 proof.
+                `;
+                copyL9KeyButton.classList.remove('hidden');
+                l9StatusMessage.textContent = "L9 Key Generated Successfully! (Pipeline Complete)";
+
+            } catch (error)
+ {
+                console.error("Error deriving L9 key:", error);
+                l9StatusMessage.textContent = "Error during L9 key derivation.";
+            } finally {
+                l9GenerateButton.disabled = false;
+                l9Loader.classList.add('hidden');
+            }
+        }
+
+
+        // --- Event Listeners ---
+        generateButton.addEventListener('click', () => {
+            if (isRunning) return;
+
+            // NEW: Get input word at the start
+            currentEncryptedWord = inputWordInput.value;
+            if (currentEncryptedWord.trim() === "") {
+                l1StatusMessage.textContent = "Error: Please enter an input word to encrypt.";
+                return;
+            }
+
+            // Reset all results
+            l1ResultsOutput.textContent = "";
+            l2ResultsOutput.textContent = "";
+            l3ResultsOutput.textContent = "";
+            l4ResultsOutput.textContent = "";
+            l5ResultsOutput.textContent = "";
+            l6ResultsOutput.textContent = "";
+            l7ResultsOutput.textContent = "";
+            l8ResultsOutput.textContent = "";
+            l9ResultsOutput.textContent = "";
+            copyL1KeyButton.classList.add('hidden');
+            copyL2KeyButton.classList.add('hidden');
+            copyL3KeyButton.classList.add('hidden');
+            copyL4KeyButton.classList.add('hidden');
+            copyL5KeyButton.classList.add('hidden');
+            copyL6KeyButton.classList.add('hidden');
+            copyL7KeyButton.classList.add('hidden');
+            copyL8KeyButton.classList.add('hidden');
+            copyL9KeyButton.classList.add('hidden');
+            l2Loader.classList.add('hidden');
+            l3Loader.classList.add('hidden');
+            l4Loader.classList.add('hidden');
+            l5Loader.classList.add('hidden');
+            l6Loader.classList.add('hidden');
+            l7Loader.classList.add('hidden');
+            l8Loader.classList.add('hidden');
+            l9Loader.classList.add('hidden');
+            finalL1MasterKey = "";
+            finalL2MasterKey = "";
+            finalL3MasterKey = "";
+            finalL4MasterKey = "";
+            finalL5MasterKey = "";
+            finalL6MasterKey = "";
+            finalL7MasterKey = "";
+            finalL8MasterKey = "";
+            finalL9MasterKey = "";
+            generateButton.disabled = true;
+            l2GenerateButton.disabled = true;
+            l3GenerateButton.disabled = true;
+            l4GenerateButton.disabled = true;
+            l5GenerateButton.disabled = true;
+            l6GenerateButton.disabled = true;
+            l7GenerateButton.disabled = true;
+            l8GenerateButton.disabled = true;
+            l9GenerateButton.disabled = true;
+            l2GenerateButton.textContent = "Generate L2 Key (Requires L1 Key)";
+            l3GenerateButton.textContent = "Generate L3 Key (Requires L2 Key)";
+            l4GenerateButton.textContent = "Generate L4 Key (Requires L3 Key)";
+            l5GenerateButton.textContent = "Generate L5 Key (Requires L4 Key)";
+            l6GenerateButton.textContent = "Generate L6 Key (Requires L5 Key)";
+            l7GenerateButton.textContent = "Generate L7 Key (Requires L6 Key)";
+            l8GenerateButton.textContent = "Generate L8 Proof (Requires L7 Key)";
+            l9GenerateButton.textContent = "Generate L9 Key (Requires L8 Proof)";
+            l2StatusMessage.textContent = "Generate L1 key to proceed.";
+            l3StatusMessage.textContent = "Generate L2 key to proceed.";
+            l4StatusMessage.textContent = "Generate L3 key to proceed.";
+            l5StatusMessage.textContent = "Generate L4 key to proceed.";
+            l6StatusMessage.textContent = "Generate L5 key to proceed.";
+            l7StatusMessage.textContent = "Generate L6 key to proceed.";
+            l8StatusMessage.textContent = "Generate L7 key to proceed.";
+            l9StatusMessage.textContent = "Generate L8 proof to proceed.";
+            isRunning = true;
+
+            l1StatusMessage.textContent = "Initializing L1 simulation...";
+
+            // Use setTimeout to allow UI to update before init
+            setTimeout(() => {
+                if (initializeSimulation()) {
+                    const startTime = performance.now();
+                    runSimulation(startTime);
+                }
+            }, 50);
+        });
+
+        // L2 button listener
+        l2GenerateButton.addEventListener('click', deriveL2Key);
+
+        // L3 button listener
+        l3GenerateButton.addEventListener('click', deriveL3Key);
+
+        // L4 button listener
+        l4GenerateButton.addEventListener('click', deriveL4Key);
+
+        // L5 button listener
+        l5GenerateButton.addEventListener('click', deriveL5Key);
+
+        // L6 button listener
+        l6GenerateButton.addEventListener('click', deriveL6Key);
+
+        // L7 button listener
+        l7GenerateButton.addEventListener('click', deriveL7Key);
+
+        // L8 button listener
+        l8GenerateButton.addEventListener('click', deriveL8Proof);
+
+        // L9 button listener
+        l9GenerateButton.addEventListener('click', deriveL9Key);
+
+        /**
+         * Reusable copy-to-clipboard function
+         */
+        function copyKeyToClipboard(key, buttonElement) {
+            if (!key) return;
+
+            // Use execCommand as a fallback for iframe environments
+            const textArea = document.createElement("textarea");
+            textArea.value = key;
+            textArea.style.position = "fixed"; // Prevent scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                buttonElement.textContent = successful ? 'Copied!' : 'Copy Failed';
+            } catch (err) {
+                buttonElement.textContent = 'Copy Failed';
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+
+            document.body.removeChild(textArea);
+
+            // Reset button text
+            setTimeout(() => {
+                let text = 'Copy Key';
+                if (buttonElement.id === 'copy-l1-key-button') {
+                    text = 'Copy L1 Key';
+                } else if (buttonElement.id === 'copy-l2-key-button') {
+                    text = 'Copy L2 Key';
+                } else if (buttonElement.id === 'copy-l3-key-button') {
+                    text = 'Copy L3 Key';
+                } else if (buttonElement.id === 'copy-l4-key-button') {
+                    text = 'Copy L4 Key';
+                } else if (buttonElement.id === 'copy-l5-key-button') {
+                    text = 'Copy L5 Key';
+                } else if (buttonElement.id === 'copy-l6-key-button') {
+                    text = 'Copy L6 Key';
+                } else if (buttonElement.id === 'copy-l7-key-button') {
+                    text = 'Copy L7 Key';
+                } else if (buttonElement.id === 'copy-l8-key-button') {
+                    text = 'Copy L8 Proof';
+                } else if (buttonElement.id === 'copy-l9-key-button') {
+                    text = 'Copy L9 Key';
+                }
+                buttonElement.textContent = text;
+            }, 2000);
+        }
+
+        // L1 Copy Button
+        copyL1KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL1MasterKey, copyL1KeyButton);
+        });
+
+        // L2 Copy Button
+        copyL2KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL2MasterKey, copyL2KeyButton);
+        });
+
+        // L3 Copy Button
+        copyL3KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL3MasterKey, copyL3KeyButton);
+        });
+
+        // L4 Copy Button
+        copyL4KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL4MasterKey, copyL4KeyButton);
+        });
+
+        // L5 Copy Button
+        copyL5KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL5MasterKey, copyL5KeyButton);
+        });
+
+        // L6 Copy Button
+        copyL6KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL6MasterKey, copyL6KeyButton);
+        });
+
+        // L7 Copy Button
+        copyL7KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL7MasterKey, copyL7KeyButton);
+        });
+
+        // L8 Copy Button
+        copyL8KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL8MasterKey, copyL8KeyButton);
+        });
+
+        // L9 Copy Button
+        copyL9KeyButton.addEventListener('click', () => {
+            copyKeyToClipboard(finalL9MasterKey, copyL9KeyButton);
+        });
+
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Initial setup
+        resizeCanvas();
+        showTab('l1'); // Start on L1 tab
+    </script>
+</body>
+</html>
+

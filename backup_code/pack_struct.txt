@@ -1,0 +1,21 @@
+pack/
+├── __init__.py                     # Main package exports for both layers
+├── core/
+│   ├── __init__.py                # Core module exports
+│   ├── layer1.py                  # Your chaos entropy generator code
+│   ├── layer2.py                  # Your MLWE encryption code (wrapped)
+│   └── shared/                    # Shared components from Layer 1
+│       ├── __init__.py
+│       ├── quantum_chaos.py       # QuantumChaosEngine
+│       ├── lattice_mixer.py       # LatticeEntropyMixer  
+│       ├── kdf.py                 # QuantumResistantKDF
+│       └── hardware_entropy.py    # HardwareEntropySource
+├── utils/
+│   ├── __init__.py
+│   ├── helpers.py                 # Cross-layer utilities
+│   └── constants.py               # Global constants
+├── examples/
+│   ├── layer1_example.py          # Layer 1 usage
+│   ├── layer2_example.py          # Layer 2 usage  
+│   └── combined_example.py        # Both layers together
+└── setup.py
